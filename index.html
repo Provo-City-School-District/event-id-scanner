@@ -57,23 +57,18 @@ switch bootstrap to local assets
 
     <script type="text/javascript">
       const status = document.getElementById("status");
-    //   var inputfield = $("scannedID");
-      
-    
-    
-    
-    window.onload = function () {
+      //   var inputfield = $("scannedID");
+
+      window.onload = function () {
         document.getElementById("scannedID").focus();
-        document.getElementById("status").css("background-color","green");
+        document.getElementById("status").css("background-color", "green");
       };
 
-      
-    //   if($('#scannedID').hasFocus()) {
-    //     document.getElementById("status").css("background-color","green"); 
-    //   } else {
-    //     document.getElementById("status").css("background-color","red"); 
-    //   }
-
+      //   if($('#scannedID').hasFocus()) {
+      //     document.getElementById("status").css("background-color","green");
+      //   } else {
+      //     document.getElementById("status").css("background-color","red");
+      //   }
 
       function postToGoogle() {
         var field3 = $("#scannedID").val();
