@@ -1,8 +1,8 @@
 <!-- To Do List
-
-
-make status box change colors depending on 
-switch bootstrap to local assets 
+  switch bootstrap to local assets
+  control submit if less than 100 characters in box.
+  reset form if more than 1 but less than 100 characters for longer than 10 seconds
+  
 -->
 
 <!DOCTYPE html>
@@ -30,9 +30,7 @@ switch bootstrap to local assets
   <body>
     <div class="container text-center">
       <div class="row justify-content-center">
-        <div id="status">
-          <span class="align-middle">Ready to Scan</span>
-        </div>
+        <div id="status">Ready to Scan</div>
       </div>
       <form id="idScanner" target="_self" onsubmit="" action="">
         <fieldset>
@@ -56,27 +54,13 @@ switch bootstrap to local assets
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
     <script type="text/javascript">
-      const status = document.getElementById("status");
-      //   var inputfield = $("scannedID");
-
-      window.onload = function () {
-        document.getElementById("scannedID").focus();
-        document.getElementById("status").css("background-color", "green");
-      };
-
-      //   if($('#scannedID').hasFocus()) {
-      //     document.getElementById("status").css("background-color","green");
-      //   } else {
-      //     document.getElementById("status").css("background-color","red");
-      //   }
-
+      //submission ajax
       function postToGoogle() {
         var field3 = $("#scannedID").val();
-
         $.ajax({
           url: "https://docs.google.com/forms/u/0/d/e/1FAIpQLSdSkLtRUpE_VlelJziBbCNMrJxC-v3d1Hwgxm9fjVRo2j_z3g/formResponse",
           data: { "entry.59559891": field3 },
-          type: "POST",
+          type: "get",
           dataType: "xml",
           statusCode: {
             0: function () {
@@ -91,14 +75,27 @@ switch bootstrap to local assets
         });
       }
 
-      $(document).ready(function () {
+      window.onload = function () {
+        //switch submit to run function
         $("#idScanner").submit(function () {
           postToGoogle();
           return false;
         });
-      });
-    </script>
 
-    <!-- <script src="scripts.js"></script> -->
+        //set focus to input
+        document.getElementById("scannedID").focus();
+
+        //check if input has focus
+        if ($("#scannedID").is(":focus")) {
+          //if input has focus box is green
+          $("#status").css("background-color", "green");
+          $("#status").html("Ready To scan");
+        } else {
+          //if input does not have focus box is red
+          $("#status").css("background-color", "red");
+          $("#status").html("Not Ready To scan");
+        }
+      };
+    </script>
   </body>
 </html>
