@@ -1,6 +1,5 @@
 <!-- To Do List
   switch bootstrap to local assets
-  control submit if less than 100 characters in box.
   reset form if more than 1 but less than 100 characters for longer than 10 seconds
   
 -->
@@ -32,15 +31,25 @@
       <div class="row justify-content-center">
         <div id="status">Ready to Scan</div>
       </div>
-      <form id="idScanner" target="_self" onsubmit="" action="">
+      <form
+        id="idScanner"
+        target="_self"
+        onsubmit="event.preventDefault(); postToGoogle();"
+        action=""
+      >
         <fieldset>
           <input
-            class="form-control visually-hidden"
+            class="form-control"
             id="scannedID"
             name="entry.59559891"
             type="text"
-            placeholder="input"
-            aria-label="input example"
+            placeholder="Scan Your Drivers License"
+            aria-label="Scan Your Drivers License"
+            pattern=".{100,105}"
+            required
+            title="100 characters required"
+            autocomplete="off"
+            maxlength="100"
           />
         </fieldset>
       </form>
@@ -54,39 +63,18 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
     <script type="text/javascript">
-      //submission ajax
-      function postToGoogle() {
-        var field3 = $("#scannedID").val();
-        $.ajax({
-          url: "https://docs.google.com/forms/u/0/d/e/1FAIpQLSdSkLtRUpE_VlelJziBbCNMrJxC-v3d1Hwgxm9fjVRo2j_z3g/formResponse",
-          data: { "entry.59559891": field3 },
-          type: "get",
-          dataType: "xml",
-          statusCode: {
-            0: function () {
-              //Success message
-              $("#idScanner").trigger("reset");
-            },
-            200: function () {
-              //Success Message
-              $("#idScanner").trigger("reset");
-            },
-          },
-        });
-      }
-
       window.onload = function () {
-        //switch submit to run function
-        $("#idScanner").submit(function () {
-          postToGoogle();
-          return false;
-        });
-
         //set focus to input
-        document.getElementById("scannedID").focus();
+        resetRefocus();
+
+        //switch submit to run function
+        // $("#idScanner").submit(function () {
+        $("#idScanner").on("submit", function () {
+          e.preventDefault();
+        });
 
         //check if input has focus
-        if ($("#scannedID").is(":focus")) {
+        if ($("#scannedID").is(":focus") && $("#scannedID").val().length >= 0) {
           //if input has focus box is green
           $("#status").css("background-color", "green");
           $("#status").html("Ready To scan");
@@ -96,6 +84,62 @@
           $("#status").html("Not Ready To scan");
         }
       };
+
+      window.ready = function () {
+        //set focus to input
+        resetRefocus();
+      };
+
+      $("#scannedID").keyup(function () {
+        alert("keyup called");
+        // if ($(this).val().length >= 0) {
+        //   $("#status").css("background-color", "green");
+        //   $("#status").html("Ready To scan");
+        // } else {
+        //    $("#status").css("background-color", "red");
+        //   $("#status").html("Not Ready To scan");
+        // }
+      });
+
+      //submit function
+      function postToGoogle() {
+        //variables
+        let field3 = document.getElementById("scannedID").value;
+
+        console.log(field3);
+        if (field3.length < 99) {
+          e.preventDefault();
+        } else {
+          $.ajax({
+            //submit URL
+            url: "https://docs.google.com/forms/u/0/d/e/1FAIpQLSdSkLtRUpE_VlelJziBbCNMrJxC-v3d1Hwgxm9fjVRo2j_z3g/formResponse",
+            data: { "entry.59559891": field3 },
+            type: "POST",
+            dataType: "xml",
+            statusCode: {
+              0: function () {
+                //Success message
+                //
+              },
+              200: function () {
+                //Success Message
+              },
+            },
+          });
+          resetRefocus();
+          alert("Thank you for Scanning in");
+        }
+        // postToGoogle();
+        // return false;
+
+        // console.log(field3.length);
+      }
+
+      //reset function
+      function resetRefocus() {
+        $("#idScanner").trigger("reset");
+        document.getElementById("scannedID").focus();
+      }
     </script>
   </body>
 </html>
