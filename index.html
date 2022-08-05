@@ -1,4 +1,8 @@
-<!-- To Do List
+<!-- 
+  
+  
+  
+  Could do
   switch bootstrap to local assets
   reset form if more than 1 but less than 100 characters for longer than 10 seconds
   
@@ -19,6 +23,7 @@
       width: 50%;
       border: black solid 1px;
       padding: 5% 0 5% 0;
+      background-color:green;
     }
   </style>
 </head>
@@ -30,7 +35,7 @@
     </div>
     <form id="idScanner" target="_self" onsubmit="event.preventDefault();postToGoogle();" action="">
       <fieldset>
-        <input class="form-control" id="scannedID" name="entry.59559891" type="text"
+        <input class="form-control visually-hidden" id="scannedID" name="entry.59559891" type="text"
           placeholder="Scan Your Drivers License" aria-label="Scan Your Drivers License" pattern=".{100,105}" required
           title="100 characters required" autocomplete="off" maxlength="100" />
       </fieldset>
@@ -53,15 +58,15 @@
       });
 
       //check if input has focus
-      if ($("#scannedID").is(":focus") && $("#scannedID").val().length >= 0) {
-        //if input has focus box is green
-        $("#status").css("background-color", "green");
-        $("#status").html("Ready To scan");
-      } else {
-        //if input does not have focus box is red
-        $("#status").css("background-color", "red");
-        $("#status").html("Not Ready To scan");
-      }
+      // if ($("#scannedID").is(":focus") && $("#scannedID").val().length >= 0) {
+      //   //if input has focus box is green
+      //   $("#status").css("background-color", "green");
+      //   $("#status").html("Ready To scan");
+      // } else {
+      //   //if input does not have focus box is red
+      //   $("#status").css("background-color", "red");
+      //   $("#status").html("Not Ready To scan");
+      // }
     };
 
     window.ready = function () {
@@ -70,17 +75,19 @@
     };
 
     $("#scannedID").keyup(function () {
-
-      if ($(this).val().length >= 99) {
-
+      let inputVal = document.getElementById('scannedID').value;  
+      if (inputVal.length > 100) {
         e.preventDefault();
+      }
+      if (inputVal.length >= 1) {
+        $("#status").css("background-color", "red");
+        $("#status").html("Not Ready To scan");
+      }
+      if (inputVal.length <= 0) {
+        $("#status").css("background-color", "green");
+        $("#status").html("Ready To scan");
+      }
 
-      }// else {
-      //   // alert('keyup if false');
-      //   // postToGoogle();
-      //   //  $("#status").css("background-color", "red");
-      //   // $("#status").html("Not Ready To scan");
-      // }
     });
 
 
@@ -123,6 +130,7 @@
     //reset function
     function resetRefocus() {
       $("#idScanner").trigger("reset");
+      // $('#idScanner').val('');
       document.getElementById("scannedID").focus();
     }
   </script>
