@@ -20,10 +20,15 @@
     integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous" />
   <style>
     #status {
-      width: 50%;
-      border: black solid 1px;
-      padding: 5% 0 5% 0;
-      background-color:green;
+      width: 100%;
+      border: black solid 2px;
+      margin-top: 6%;
+      font-size: 800%;
+      background-color: green;
+      display: grid;
+      align-items: center;
+      justify-content: center;
+      min-height: 80vh;
     }
   </style>
 </head>
@@ -31,7 +36,7 @@
 <body>
   <div class="container text-center">
     <div class="row justify-content-center">
-      <div id="status">Ready to Scan</div>
+      <div id="status">Ready To Scan</div>
     </div>
     <form id="idScanner" target="_self" onsubmit="event.preventDefault();postToGoogle();" action="">
       <fieldset>
@@ -75,17 +80,17 @@
     };
 
     $("#scannedID").keyup(function () {
-      let inputVal = document.getElementById('scannedID').value;  
+      let inputVal = document.getElementById('scannedID').value;
       if (inputVal.length > 100) {
         e.preventDefault();
       }
       if (inputVal.length >= 1) {
         $("#status").css("background-color", "red");
-        $("#status").html("Not Ready To scan");
+        $("#status").html("Not Ready To Scan");
       }
       if (inputVal.length <= 0) {
         $("#status").css("background-color", "green");
-        $("#status").html("Ready To scan");
+        $("#status").html("Ready To Scan");
       }
 
     });
