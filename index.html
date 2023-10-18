@@ -1,21 +1,12 @@
-<!-- 
-  
-  
-  
-  Could do
-  switch bootstrap to local assets
-  reset form if more than 1 but less than 100 characters for longer than 10 seconds
-  
--->
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="UTF-8" />
+  <meta http-equiv="refresh" content="20" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PCSD Event Scanner</title>
+  <title>PCSD Event Scanner - Edgemont - Raptor 3</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous" />
   <style>
@@ -40,11 +31,13 @@
     </div>
     <form id="idScanner" target="_self" onsubmit="event.preventDefault();postToGoogle();" action="">
       <fieldset>
-        <input class="form-control visually-hidden" id="scannedID" name="entry.59559891" type="text"
+        <input class="form-control visually-hidden" id="scannedID" name="entry.349199576" type="text"
           placeholder="Scan Your Drivers License" aria-label="Scan Your Drivers License" pattern=".{100,105}" required
-          title="100 characters required" autocomplete="off" maxlength="100" />
+          oninvalid="this.setCustomValidity('submitting data...')" onchange="try{setCustomValidity('')}catch(e){}"
+          oninput="setCustomValidity(' ')" title="100 characters required" autocomplete="off" maxlength="100" />
       </fieldset>
     </form>
+    <h1>Edgemont - Raptor 3</h1>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
@@ -61,17 +54,6 @@
       $("#idScanner").on("submit", function () {
         e.preventDefault();
       });
-
-      //check if input has focus
-      // if ($("#scannedID").is(":focus") && $("#scannedID").val().length >= 0) {
-      //   //if input has focus box is green
-      //   $("#status").css("background-color", "green");
-      //   $("#status").html("Ready To scan");
-      // } else {
-      //   //if input does not have focus box is red
-      //   $("#status").css("background-color", "red");
-      //   $("#status").html("Not Ready To scan");
-      // }
     };
 
     window.ready = function () {
@@ -80,38 +62,29 @@
     };
 
     $("#scannedID").keyup(function () {
-      let inputVal = document.getElementById('scannedID').value;
+      let inputVal = document.getElementById("scannedID").value;
       if (inputVal.length > 100) {
         e.preventDefault();
       }
-      if (inputVal.length >= 1) {
+      if (inputVal.length >= 11) {
         $("#status").css("background-color", "red");
         $("#status").html("Not Ready To Scan");
       }
-      if (inputVal.length <= 0) {
+      if (inputVal.length <= 5) {
         $("#status").css("background-color", "green");
         $("#status").html("Ready To Scan");
       }
-
     });
-
-
-
-
-
-
 
     //submit function
     function postToGoogle() {
-
       //variables
       let field3 = document.getElementById("scannedID").value;
-
       console.log(field3);
       $.ajax({
         //submit URL
-        url: "https://docs.google.com/forms/u/0/d/e/1FAIpQLSdSkLtRUpE_VlelJziBbCNMrJxC-v3d1Hwgxm9fjVRo2j_z3g/formResponse",
-        data: { "entry.59559891": field3 },
+        url: "https://docs.google.com/forms/d/e/1FAIpQLSepT53WFy1k95IFcYe6M3Yg-nkAXYfbF3dSfuLoWkyDaaHDDQ/formResponse",
+        data: { "entry.349199576": field3 },
         type: "POST",
         dataType: "xml",
         statusCode: {
@@ -121,16 +94,13 @@
           },
           200: function () {
             //Success Message
-
           },
         },
       });
-      resetRefocus();
-      alert('Thank you for Scanning in');
+      // resetRefocus();
+      // alert('Thank you for Scanning in');
+      location.reload();
     }
-
-
-
 
     //reset function
     function resetRefocus() {
